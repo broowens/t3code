@@ -14,7 +14,7 @@ import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process";
 import { normalizeModelSlug } from "@t3tools/shared/model";
-import { isWindowsCommandNotFound } from "../processRunner.ts";
+import { isCommandNotFound } from "../processRunner.ts";
 import { createProviderVersionAdvisory } from "./providerMaintenance.ts";
 import { collectUint8StreamText } from "../stream/collectUint8StreamText.ts";
 
@@ -86,7 +86,7 @@ export const spawnAndCollect = (binaryPath: string, command: ChildProcess.Comman
     );
 
     const result: CommandResult = { stdout, stderr, code: exitCode };
-    if (yield* isWindowsCommandNotFound(exitCode, stderr)) {
+    if (yield* isCommandNotFound(exitCode, stderr)) {
       return yield* new ProviderCommandNotFoundError({
         binaryPath,
         exitCode,

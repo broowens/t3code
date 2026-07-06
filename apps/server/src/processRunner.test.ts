@@ -412,3 +412,25 @@ describe("isWindowsCommandNotFound", () => {
     }),
   );
 });
+
+describe("isCommandNotFound", () => {
+  it.effect("matches POSIX shell command-not-found exits", () =>
+    Effect.gen(function* () {
+      const isCommandNotFound = yield* ProcessRunner.isCommandNotFound(
+        127,
+        "/bin/sh: grok: command not found",
+      ).pipe(Effect.provideService(HostProcessPlatform, "darwin"));
+      expect(isCommandNotFound).toBe(true);
+    }),
+  );
+
+  it.effect("does not classify arbitrary POSIX non-zero exits as command-not-found", () =>
+    Effect.gen(function* () {
+      const isCommandNotFound = yield* ProcessRunner.isCommandNotFound(
+        1,
+        "grok failed during startup",
+      ).pipe(Effect.provideService(HostProcessPlatform, "darwin"));
+      expect(isCommandNotFound).toBe(false);
+    }),
+  );
+});

@@ -73,10 +73,7 @@ function SkillChip(props: { skill: InlineSkill; rawText: string }) {
   return (
     <span className="inline-flex align-middle leading-none" data-markdown-copy={props.rawText}>
       <span
-        className={cn(
-          CHAT_INLINE_CHIP_CLASS_NAME,
-          "border-fuchsia-500/25 bg-fuchsia-500/12 text-fuchsia-700 dark:text-fuchsia-300",
-        )}
+        className={cn(CHAT_INLINE_CHIP_CLASS_NAME, "border-primary/30 bg-primary/12 text-primary")}
       >
         <span
           aria-hidden="true"

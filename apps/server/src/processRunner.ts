@@ -156,9 +156,28 @@ const WINDOWS_COMMAND_NOT_FOUND_PATTERNS = [
   /wird nicht als interner oder externer befehl/i,
 ] as const;
 
+const POSIX_COMMAND_NOT_FOUND_PATTERNS = [/command not found/i, /not found/i] as const;
+
 function hasWindowsCommandNotFoundMessage(output: string): boolean {
   return WINDOWS_COMMAND_NOT_FOUND_PATTERNS.some((pattern) => pattern.test(output));
 }
+
+function hasPosixCommandNotFoundMessage(output: string): boolean {
+  return POSIX_COMMAND_NOT_FOUND_PATTERNS.some((pattern) => pattern.test(output));
+}
+
+export const isCommandNotFound = Effect.fn("processRunner.isCommandNotFound")(function* (
+  code: number | null,
+  stderr: string,
+) {
+  const platform = yield* HostProcessPlatform;
+  if (platform === "win32") {
+    if (code === 9009) return true;
+    return hasWindowsCommandNotFoundMessage(stderr);
+  }
+  if (code !== 127) return false;
+  return hasPosixCommandNotFoundMessage(stderr);
+});
 
 export const isWindowsCommandNotFound = Effect.fn("processRunner.isWindowsCommandNotFound")(
   function* (code: number | null, stderr: string) {

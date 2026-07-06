@@ -226,7 +226,7 @@ const ComposerConnectionStatusPill = memo(function ComposerConnectionStatusPill(
         className="max-w-full flex-row items-center gap-2 rounded-full bg-white/90 px-3 py-2 shadow-sm active:opacity-70 dark:bg-neutral-900/90"
       >
         {isReconnecting ? (
-          <ActivityIndicator size="small" color="#8e8e93" />
+          <ActivityIndicator size="small" color="#8b949e" />
         ) : (
           <View className="h-2 w-2 rounded-full bg-red-500" />
         )}

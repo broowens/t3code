@@ -27,8 +27,8 @@ export interface ThreadStatusPresentation extends StatusTone {
 
 /** Neutral icon colors for threads with no actionable status. */
 export const THREAD_STATUS_NEUTRAL_ICON = {
-  iconColor: "#8e8e93",
-  iconBackground: "rgba(142,142,147,0.22)",
+  iconColor: "#8b949e",
+  iconBackground: "rgba(139,148,158,0.22)",
 } as const;
 
 function isLatestTurnSettled(
@@ -55,8 +55,8 @@ export function resolveThreadStatus(
       label: "Needs Approval",
       pillClassName: "bg-amber-500/12 dark:bg-amber-500/16",
       textClassName: "text-amber-700 dark:text-amber-300",
-      iconColor: "#ff9f0a",
-      iconBackground: "rgba(255,159,10,0.22)",
+      iconColor: "#d29922",
+      iconBackground: "rgba(210,153,34,0.22)",
       pulse: false,
     };
   }
@@ -67,8 +67,8 @@ export function resolveThreadStatus(
       label: "Awaiting Input",
       pillClassName: "bg-indigo-500/12 dark:bg-indigo-500/16",
       textClassName: "text-indigo-700 dark:text-indigo-300",
-      iconColor: "#5e5ce6",
-      iconBackground: "rgba(94,92,230,0.22)",
+      iconColor: "#a371f7",
+      iconBackground: "rgba(163,113,247,0.22)",
       pulse: false,
     };
   }
@@ -79,8 +79,8 @@ export function resolveThreadStatus(
       label: "Working",
       pillClassName: "bg-sky-500/12 dark:bg-sky-500/16",
       textClassName: "text-sky-700 dark:text-sky-300",
-      iconColor: "#0a84ff",
-      iconBackground: "rgba(10,132,255,0.22)",
+      iconColor: "#58a6ff",
+      iconBackground: "rgba(88,166,255,0.22)",
       pulse: true,
     };
   }
@@ -91,8 +91,8 @@ export function resolveThreadStatus(
       label: "Connecting",
       pillClassName: "bg-sky-500/12 dark:bg-sky-500/16",
       textClassName: "text-sky-700 dark:text-sky-300",
-      iconColor: "#0a84ff",
-      iconBackground: "rgba(10,132,255,0.22)",
+      iconColor: "#58a6ff",
+      iconBackground: "rgba(88,166,255,0.22)",
       pulse: true,
     };
   }
@@ -103,8 +103,8 @@ export function resolveThreadStatus(
       label: "Error",
       pillClassName: "bg-rose-500/12 dark:bg-rose-500/16",
       textClassName: "text-rose-700 dark:text-rose-300",
-      iconColor: "#ff453a",
-      iconBackground: "rgba(255,69,58,0.22)",
+      iconColor: "#f85149",
+      iconBackground: "rgba(248,81,73,0.22)",
       pulse: false,
     };
   }

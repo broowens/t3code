@@ -58,16 +58,16 @@ export function AgentActivity(
       : "now";
   const activeLabel = `${props.activeCount} active`;
   const isLight = environment.colorScheme === "light";
-  const primaryForeground = isLight ? "#262626" : "#f5f5f5";
-  const secondaryForeground = isLight ? "#525252" : "#a3a3a3";
-  const mutedForeground = isLight ? "#737373" : "#8e8e93";
+  const primaryForeground = isLight ? "#262626" : "#f0f6fc";
+  const secondaryForeground = isLight ? "#525252" : "#c9d1d9";
+  const mutedForeground = isLight ? "#737373" : "#8b949e";
   const tint = environment.isLuminanceReduced
     ? secondaryForeground
     : row0?.phase === "waiting_for_approval" || row0?.phase === "waiting_for_input"
-      ? "#f97316"
+      ? "#d29922"
       : row0?.phase === "failed"
-        ? "#ef4444"
-        : "#14b8a6";
+        ? "#f85149"
+        : "#3fb950";
 
   return {
     banner: (

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GitHub Dark Theme Overhaul Plan</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0d1117;
+        --panel: #161b22;
+        --panel-2: #21262d;
+        --border: #30363d;
+        --text: #f0f6fc;
+        --muted: #8b949e;
+        --subtle: #6e7681;
+        --accent: #58a6ff;
+        --success: #3fb950;
+        --danger: #f85149;
+        --warning: #d29922;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 18% 0%, rgba(88, 166, 255, 0.13), transparent 32rem),
+          linear-gradient(180deg, #010409 0%, var(--bg) 48%, #010409 100%);
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.55;
+      }
+
+      main {
+        width: min(980px, calc(100vw - 40px));
+        margin: 0 auto;
+        padding: 48px 0 64px;
+      }
+
+      header {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(22, 27, 34, 0.88);
+        padding: 28px;
+        box-shadow: 0 24px 80px rgba(1, 4, 9, 0.55);
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        line-height: 1.05;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-size: 1rem;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+
+      section {
+        margin-top: 18px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: rgba(13, 17, 23, 0.78);
+        padding: 22px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      code {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--panel);
+        padding: 0.12rem 0.35rem;
+        color: var(--text);
+      }
+
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .swatch {
+        min-height: 88px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--panel);
+        padding: 12px;
+      }
+
+      .swatch div {
+        height: 28px;
+        border-radius: 7px;
+        margin-bottom: 10px;
+        border: 1px solid rgba(240, 246, 252, 0.12);
+      }
+
+      .label {
+        display: block;
+        color: var(--text);
+        font-size: 0.88rem;
+        font-weight: 650;
+      }
+
+      .value {
+        display: block;
+        color: var(--subtle);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.78rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>GitHub Dark Theme Overhaul</h1>
+        <p>
+          Replace the app's dark-mode neutral palette with GitHub Dark / Primer-style semantic
+          colors while preserving existing Tailwind token names and component behavior.
+        </p>
+      </header>
+
+      <section>
+        <h2>Scope</h2>
+        <ul>
+          <li>Update web semantic tokens in <code>apps/web/src/index.css</code>.</li>
+          <li>Mirror the same dark palette in mobile tokens in <code>apps/mobile/global.css</code>.</li>
+          <li>Keep existing component classes and layout untouched unless a token mismatch requires it.</li>
+          <li>Do not touch unrelated server changes currently present in the working tree.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Palette Direction</h2>
+        <div class="swatches">
+          <div class="swatch">
+            <div style="background:#0d1117"></div>
+            <span class="label">Canvas default</span>
+            <span class="value">#0d1117</span>
+          </div>
+          <div class="swatch">
+            <div style="background:#161b22"></div>
+            <span class="label">Canvas subtle</span>
+            <span class="value">#161b22</span>
+          </div>
+          <div class="swatch">
+            <div style="background:#21262d"></div>
+            <span class="label">Control surface</span>
+            <span class="value">#21262d</span>
+          </div>
+          <div class="swatch">
+            <div style="background:#30363d"></div>
+            <span class="label">Border default</span>
+            <span class="value">#30363d</span>
+          </div>
+          <div class="swatch">
+            <div style="background:#f0f6fc"></div>
+            <span class="label">Foreground</span>
+            <span class="value">#f0f6fc</span>
+          </div>
+          <div class="swatch">
+            <div style="background:#8b949e"></div>
+            <span class="label">Muted text</span>
+            <span class="value">#8b949e</span>
+          </div>
+          <div class="swatch">
+            <div style="background:#58a6ff"></div>
+            <span class="label">Accent blue</span>
+            <span class="value">#58a6ff</span>
+          </div>
+          <div class="swatch">
+            <div style="background:#3fb950"></div>
+            <span class="label">Success</span>
+            <span class="value">#3fb950</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Validation</h2>
+        <ul>
+          <li>Run <code>vp check</code>.</li>
+          <li>Run <code>vp run typecheck</code>.</li>
+          <li>If checks expose unrelated pre-existing server failures, report them without broadening scope.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

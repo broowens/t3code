@@ -145,10 +145,10 @@ const PIERRE_LIGHT_SHIKI_THEME = {
 const PIERRE_DARK_SHIKI_THEME = {
   name: NATIVE_REVIEW_DIFF_THEME_NAME_BY_SCHEME.dark,
   type: "dark" as const,
-  fg: "#adadb1",
-  bg: "#0a0a0a",
+  fg: "#c9d1d9",
+  bg: "#0d1117",
   settings: [
-    { settings: { foreground: "#adadb1", background: "#0a0a0a" } },
+    { settings: { foreground: "#c9d1d9", background: "#0d1117" } },
     { scope: "comment, punctuation.definition.comment", settings: { foreground: "#84848A" } },
     {
       scope: "keyword, storage, storage.type, keyword.operator.expression",

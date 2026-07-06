@@ -115,4 +115,43 @@ describe("ProviderCommandNotFoundError", () => {
       expect(error.message).not.toContain("secret-token-value");
     });
   });
+
+  it.effect("maps POSIX shell command-not-found exits to safe diagnostics", () => {
+    const stderr = "/bin/sh: grok: command not found";
+    const spawner = ChildProcessSpawner.make(() =>
+      Effect.succeed(
+        ChildProcessSpawner.makeHandle({
+          pid: ChildProcessSpawner.ProcessId(1),
+          exitCode: Effect.succeed(ChildProcessSpawner.ExitCode(127)),
+          isRunning: Effect.succeed(false),
+          kill: () => Effect.void,
+          unref: Effect.succeed(Effect.void),
+          stdin: Sink.drain,
+          stdout: Stream.empty,
+          stderr: Stream.encodeText(Stream.make(stderr)),
+          all: Stream.empty,
+          getInputFd: () => Sink.drain,
+          getOutputFd: () => Stream.empty,
+        }),
+      ),
+    );
+    return Effect.gen(function* () {
+      const error = yield* spawnAndCollect("grok", ChildProcess.make("grok", ["--version"])).pipe(
+        Effect.provide(Layer.succeed(ChildProcessSpawner.ChildProcessSpawner, spawner)),
+        Effect.provideService(HostProcessPlatform, "darwin"),
+        Effect.flip,
+      );
+
+      if (error._tag !== "ProviderCommandNotFoundError") {
+        throw new Error(`Unexpected error: ${error._tag}`);
+      }
+
+      expect(error.binaryPath).toBe("grok");
+      expect(error.exitCode).toBe(127);
+      expect(error.stdoutLength).toBe(0);
+      expect(error.stderrLength).toBe(stderr.length);
+      expect(isCommandMissingCause(error)).toBe(true);
+      expect(error.message).not.toContain(stderr);
+    });
+  });
 });
