@@ -8,7 +8,7 @@
     />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#161616" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#161616" />
+    <meta name="theme-color" content="#161616" data-dynamic-theme-color="true" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <script>
@@ -26,7 +26,16 @@
           nightowl: { light: "#fbfbfb", dark: "#011627" },
           rosepine: { light: "#faf4ed", dark: "#191724" },
         };
-        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        const applyChromeColor = (color) => {
+          document.documentElement.style.backgroundColor = color;
+          // Browsers use the first matching theme-color meta in tree order, so
+          // drop the static media-scoped fallbacks (they only matter without JS)
+          // and keep the single tag that useTheme.ts also controls at runtime.
+          for (const meta of document.querySelectorAll('meta[name="theme-color"][media]')) {
+            meta.remove();
+          }
+          document.querySelector('meta[name="theme-color"]')?.setAttribute("content", color);
+        };
         try {
           const storedTheme = window.localStorage.getItem("t3code:theme");
           const theme =
@@ -44,13 +53,10 @@
           const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
           const isDark = theme === "dark" || (theme === "system" && prefersDark);
           document.documentElement.classList.toggle("dark", isDark);
-          const chromeColor = THEME_BACKGROUNDS[colorTheme][isDark ? "dark" : "light"];
-          document.documentElement.style.backgroundColor = chromeColor;
-          themeColorMeta?.setAttribute("content", chromeColor);
+          applyChromeColor(THEME_BACKGROUNDS[colorTheme][isDark ? "dark" : "light"]);
         } catch {
           document.documentElement.classList.add("dark");
-          document.documentElement.style.backgroundColor = THEME_BACKGROUNDS.default.dark;
-          themeColorMeta?.setAttribute("content", THEME_BACKGROUNDS.default.dark);
+          applyChromeColor(THEME_BACKGROUNDS.default.dark);
         }
       })();
     </script>
