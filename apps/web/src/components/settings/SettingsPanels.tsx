@@ -36,7 +36,7 @@ import { ProviderModelPicker } from "../chat/ProviderModelPicker";
 import { TraitsPicker } from "../chat/TraitsPicker";
 import { isElectron } from "../../env";
 import { buildHostedChannelSelectionUrl, type HostedAppChannel } from "../../hostedPairing";
-import { useTheme } from "../../hooks/useTheme";
+import { isColorTheme, useTheme } from "../../hooks/useTheme";
 import { usePrimarySettings, useUpdatePrimarySettings } from "../../hooks/useSettings";
 import { useThreadActions } from "../../hooks/useThreadActions";
 import { useDesktopUpdateState } from "../../state/desktopUpdate";
@@ -101,6 +101,53 @@ const THEME_OPTIONS = [
   {
     value: "dark",
     label: "Dark",
+  },
+] as const;
+
+const COLOR_THEME_OPTIONS = [
+  {
+    value: "default",
+    label: "Default",
+  },
+  {
+    value: "github",
+    label: "GitHub",
+  },
+  {
+    value: "catppuccin",
+    label: "Catppuccin",
+  },
+  {
+    value: "tokyonight",
+    label: "Tokyo Night",
+  },
+  {
+    value: "gruvbox",
+    label: "Gruvbox",
+  },
+  {
+    value: "nord",
+    label: "Nord",
+  },
+  {
+    value: "dracula",
+    label: "Dracula",
+  },
+  {
+    value: "material",
+    label: "Material",
+  },
+  {
+    value: "everforest",
+    label: "Everforest",
+  },
+  {
+    value: "nightowl",
+    label: "Night Owl",
+  },
+  {
+    value: "rosepine",
+    label: "Rosé Pine",
   },
 ] as const;
 
@@ -373,7 +420,7 @@ function AboutVersionSection() {
 }
 
 export function useSettingsRestore(onRestored?: () => void) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, colorTheme, setColorTheme } = useTheme();
   const settings = usePrimarySettings();
   const updateSettings = useUpdatePrimarySettings();
 
@@ -385,6 +432,7 @@ export function useSettingsRestore(onRestored?: () => void) {
   const changedSettingLabels = useMemo(
     () => [
       ...(theme !== "system" ? ["Theme"] : []),
+      ...(colorTheme !== "default" ? ["Color theme"] : []),
       ...(settings.timestampFormat !== DEFAULT_UNIFIED_SETTINGS.timestampFormat
         ? ["Time format"]
         : []),
@@ -438,6 +486,7 @@ export function useSettingsRestore(onRestored?: () => void) {
       settings.timestampFormat,
       settings.wordWrap,
       theme,
+      colorTheme,
     ],
   );
 
@@ -452,6 +501,7 @@ export function useSettingsRestore(onRestored?: () => void) {
     if (!confirmed) return;
 
     setTheme("system");
+    setColorTheme("default");
     updateSettings({
       timestampFormat: DEFAULT_UNIFIED_SETTINGS.timestampFormat,
       wordWrap: DEFAULT_UNIFIED_SETTINGS.wordWrap,
@@ -468,7 +518,7 @@ export function useSettingsRestore(onRestored?: () => void) {
       textGenerationModelSelection: DEFAULT_UNIFIED_SETTINGS.textGenerationModelSelection,
     });
     onRestored?.();
-  }, [changedSettingLabels, onRestored, setTheme, updateSettings]);
+  }, [changedSettingLabels, onRestored, setTheme, setColorTheme, updateSettings]);
 
   return {
     changedSettingLabels,
@@ -477,7 +527,7 @@ export function useSettingsRestore(onRestored?: () => void) {
 }
 
 export function GeneralSettingsPanel() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, colorTheme, setColorTheme } = useTheme();
   const settings = usePrimarySettings();
   const updateSettings = useUpdatePrimarySettings();
   const observability = useAtomValue(primaryServerObservabilityAtom);
@@ -540,6 +590,40 @@ export function GeneralSettingsPanel() {
               </SelectTrigger>
               <SelectPopup align="end" alignItemWithTrigger={false}>
                 {THEME_OPTIONS.map((option) => (
+                  <SelectItem hideIndicator key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectPopup>
+            </Select>
+          }
+        />
+
+        <SettingsRow
+          title="Color theme"
+          description="Palette applied to both light and dark modes."
+          resetAction={
+            colorTheme !== "default" ? (
+              <SettingResetButton label="color theme" onClick={() => setColorTheme("default")} />
+            ) : null
+          }
+          control={
+            <Select
+              value={colorTheme}
+              onValueChange={(value) => {
+                if (isColorTheme(value)) {
+                  setColorTheme(value);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full sm:w-40" aria-label="Color theme">
+                <SelectValue>
+                  {COLOR_THEME_OPTIONS.find((option) => option.value === colorTheme)?.label ??
+                    "Default"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectPopup align="end" alignItemWithTrigger={false}>
+                {COLOR_THEME_OPTIONS.map((option) => (
                   <SelectItem hideIndicator key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
